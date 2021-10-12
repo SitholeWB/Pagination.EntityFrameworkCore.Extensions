@@ -19,7 +19,6 @@ namespace Pagination.EntityFrameworkCore.Extensions
 
 			var startIndex = (page - 1) * limit;
 			var endIndex = page * limit;
-			var totalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)limit);
 
 			TotalItems = totalItems;
 			CurrentPage = page;
@@ -34,14 +33,14 @@ namespace Pagination.EntityFrameworkCore.Extensions
 				NextPage = page + 1;
 			}
 
-			Pages = totalPages > 0 ? Enumerable.Range(1, totalPages) : Enumerable.Empty<int>();
+			TotalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)limit);
 		}
 
 		public long TotalItems { get; private set; }
 		public int CurrentPage { get; private set; }
 		public int? NextPage { get; private set; }
 		public int? PreviousPage { get; private set; }
-		public IEnumerable<int> Pages { get; private set; }
+		public int TotalPages { get; private set; }
 		public IEnumerable<T> Results { get; private set; }
 	}
 }

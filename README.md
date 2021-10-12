@@ -18,11 +18,7 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
   "currentPage": 2,
   "nextPage": 3,
   "previousPage": 1,
-  "pages": [
-    1,
-    2,
-    3
-  ],
+  "totalPages": 3,
   "results": [
     {
       "name": "Mali",

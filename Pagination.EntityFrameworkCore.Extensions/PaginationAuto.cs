@@ -12,7 +12,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			TotalItems = pagination?.TotalItems ?? 0;
 			CurrentPage = pagination?.CurrentPage ?? 1;
 			NextPage = pagination?.NextPage;
-			Pages = pagination?.Pages ?? Enumerable.Empty<int>();
+			TotalPages = pagination?.TotalPages ?? 0;
 		}
 
 		public PaginationAuto(IEnumerable<Tsource> results, long totalItems, Func<Tsource, Tdestination> convertTsourceToTdestinationMethod, int page = 1, int limit = 10)
@@ -21,7 +21,6 @@ namespace Pagination.EntityFrameworkCore.Extensions
 
 			var startIndex = (page - 1) * limit;
 			var endIndex = page * limit;
-			var totalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)limit);
 
 			TotalItems = totalItems;
 			CurrentPage = page;
@@ -36,7 +35,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 				NextPage = page + 1;
 			}
 
-			Pages = totalPages > 0 ? Enumerable.Range(1, totalPages) : Enumerable.Empty<int>();
+			TotalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)limit);
 		}
 
 		private static void ValidateInputs(int page, int limit)
@@ -55,7 +54,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 		public int CurrentPage { get; private set; }
 		public int? NextPage { get; private set; }
 		public int? PreviousPage { get; private set; }
-		public IEnumerable<int> Pages { get; private set; }
+		public int TotalPages { get; private set; }
 		public IEnumerable<Tdestination> Results { get; private set; }
 	}
 }
