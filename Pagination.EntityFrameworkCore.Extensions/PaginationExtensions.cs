@@ -39,6 +39,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			return new Pagination<TSource>(results, totalItems, page, limit);
 		}
 
+		// PaginationAuto Mapping
 		public static async Task<PaginationAuto<TSource, Tdestination>> AsPaginationAsync<TSource, Tdestination>(this IQueryable<TSource> source, int page, int limit, Func<TSource, Tdestination> convertTsourceToTdestinationMethod, string sortColumn = "", bool orderByDescending = false)
 		{
 			ValidateInputs(page, limit);
@@ -68,6 +69,39 @@ namespace Pagination.EntityFrameworkCore.Extensions
 				results = await source.Where(expression).Skip((page - 1) * limit).Take(limit).ToListAsync();
 			}
 			return new PaginationAuto<TSource, Tdestination>(results, totalItems, convertTsourceToTdestinationMethod, page, limit);
+		}
+
+
+		// PaginationAuto Async Mapping
+		public static async Task<PaginationAuto<TSource, Tdestination>> AsPaginationAsync<TSource, Tdestination>(this IQueryable<TSource> source, int page, int limit, Task<Func<TSource, Tdestination>> convertTsourceToTdestinationMethod, string sortColumn = "", bool orderByDescending = false)
+		{
+			ValidateInputs(page, limit);
+
+			var totalItems = await source.CountAsync();
+			if (!string.IsNullOrEmpty(sortColumn))
+			{
+				source = orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn));
+			}
+			var results = source.Skip((page - 1) * limit).Take(limit);
+
+			return new PaginationAuto<TSource, Tdestination>(await results.ToListAsync(), totalItems, await convertTsourceToTdestinationMethod, page, limit);
+		}
+
+		public static async Task<PaginationAuto<TSource, Tdestination>> AsPaginationAsync<TSource, Tdestination>(this DbSet<TSource> source, int page, int limit, Expression<Func<TSource, bool>> expression, Task<Func<TSource, Tdestination>> convertTsourceToTdestinationMethod, string sortColumn = "", bool orderByDescending = false) where TSource : class
+		{
+			ValidateInputs(page, limit);
+
+			var totalItems = await source.Where(expression).CountAsync();
+			var results = Enumerable.Empty<TSource>();
+			if (!string.IsNullOrEmpty(sortColumn))
+			{
+				results = await (orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync();
+			}
+			else
+			{
+				results = await source.Where(expression).Skip((page - 1) * limit).Take(limit).ToListAsync();
+			}
+			return new PaginationAuto<TSource, Tdestination>(results, totalItems, await convertTsourceToTdestinationMethod, page, limit);
 		}
 
 		// Non Async Methods

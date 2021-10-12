@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>2.1.4</Version>
+    <Version>2.1.5</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>This is a library for List Pagination on Dotnet, auto map or convert source to destination model.
 Works well with Entity Framework as an extension and supports asynchronous calls.
@@ -21,7 +21,16 @@ More example of project URL https://github.com/SitholeWB/Pagination.EntityFramew
     <RepositoryUrl>https://github.com/SitholeWB/Pagination.EntityFrameworkCore.Extensions</RepositoryUrl>
     <Copyright>https://raw.githubusercontent.com/SitholeWB/Pagination.EntityFrameworkCore.Extensions/master/LICENSE</Copyright>
     <PackageProjectUrl>https://github.com/SitholeWB/Pagination.EntityFrameworkCore.Extensions</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NeutralLanguage>en-001</NeutralLanguage>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
