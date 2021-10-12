@@ -41,7 +41,7 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 ```
 
 ### How to use:
-
+#### Support both asynchronous vs synchronous methods, only "Async" at the end of method name will differentiate.
 ```C#
 
 		// Use only Pagination Model
