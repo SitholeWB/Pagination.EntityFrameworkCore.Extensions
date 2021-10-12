@@ -90,6 +90,7 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 
 ```C#
     		//Create a method that will map/convert source model to destination model.
+		//This method can also be Async.
 		private CountryViewModel ConverCountryToCountryViewModel(Country country)
 		{
 			return new CountryViewModel
