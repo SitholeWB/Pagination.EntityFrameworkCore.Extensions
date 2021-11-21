@@ -36,7 +36,6 @@ More example of project URL https://github.com/SitholeWB/Pagination.EntityFramew
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
   </ItemGroup>
 
 </Project>
