@@ -32,7 +32,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			var results = Enumerable.Empty<TSource>();
 			if (!string.IsNullOrEmpty(sortColumn))
 			{
-				results = await (orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
+				results = await (orderByDescending ? source.Where(expression).OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.Where(expression).OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
 			}
 			else
 			{
@@ -49,7 +49,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			var results = Enumerable.Empty<TSource>();
 			if (!string.IsNullOrEmpty(sortColumn))
 			{
-				results = await (orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
+				results = await (orderByDescending ? source.Where(expression).OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.Where(expression).OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
 			}
 			else
 			{
@@ -81,7 +81,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			var results = Enumerable.Empty<TSource>();
 			if (!string.IsNullOrEmpty(sortColumn))
 			{
-				results = await (orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
+				results = await (orderByDescending ? source.Where(expression).OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.Where(expression).OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
 			}
 			else
 			{
@@ -98,7 +98,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			var results = Enumerable.Empty<TSource>();
 			if (!string.IsNullOrEmpty(sortColumn))
 			{
-				results = await (orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
+				results = await (orderByDescending ? source.Where(expression).OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.Where(expression).OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
 			}
 			else
 			{
@@ -130,7 +130,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			var results = Enumerable.Empty<TSource>();
 			if (!string.IsNullOrEmpty(sortColumn))
 			{
-				results = await (orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
+				results = await (orderByDescending ? source.Where(expression).OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.Where(expression).OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
 			}
 			else
 			{
@@ -147,7 +147,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			var results = Enumerable.Empty<TSource>();
 			if (!string.IsNullOrEmpty(sortColumn))
 			{
-				results = await (orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
+				results = await (orderByDescending ? source.Where(expression).OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.Where(expression).OrderBy(p => EF.Property<object>(p, sortColumn))).ToListAsync().ConfigureAwait(false);
 			}
 			else
 			{
@@ -180,7 +180,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			var results = Enumerable.Empty<TSource>();
 			if (!string.IsNullOrEmpty(sortColumn))
 			{
-				results = (orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn)));
+				results = (orderByDescending ? source.Where(expression).OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.Where(expression).OrderBy(p => EF.Property<object>(p, sortColumn)));
 			}
 			else
 			{
@@ -197,7 +197,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			var results = Enumerable.Empty<TSource>();
 			if (!string.IsNullOrEmpty(sortColumn))
 			{
-				results = (orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn)));
+				results = (orderByDescending ? source.Where(expression).OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.Where(expression).OrderBy(p => EF.Property<object>(p, sortColumn)));
 			}
 			else
 			{
@@ -229,7 +229,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			var results = Enumerable.Empty<TSource>();
 			if (!string.IsNullOrEmpty(sortColumn))
 			{
-				results = (orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn)));
+				results = (orderByDescending ? source.Where(expression).OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.Where(expression).OrderBy(p => EF.Property<object>(p, sortColumn)));
 			}
 			else
 			{
@@ -246,7 +246,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			var results = Enumerable.Empty<TSource>();
 			if (!string.IsNullOrEmpty(sortColumn))
 			{
-				results = (orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn)));
+				results = (orderByDescending ? source.Where(expression).OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.Where(expression).OrderBy(p => EF.Property<object>(p, sortColumn)));
 			}
 			else
 			{
