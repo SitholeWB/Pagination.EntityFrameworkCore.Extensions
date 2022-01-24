@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Pagination.EntityFrameworkCore.Extensions
 {
-	public class PaginationAuto<Tsource, Tdestination>
+	public class PaginationAuto<Tsource, Tdestination> where Tdestination : class
 	{
 		public PaginationAuto(Pagination<Tsource> pagination, Func<Tsource, Tdestination> convertTsourceToTdestinationMethod)
 		{

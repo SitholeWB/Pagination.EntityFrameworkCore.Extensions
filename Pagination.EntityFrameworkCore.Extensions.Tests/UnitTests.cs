@@ -56,7 +56,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
 		[Test]
 		public void AsPagination_GivenSearchAndOrder_ConverUserToUserViewModel_ShouldReturnFilteredAndSorted()
 		{
-			var people = _usersDbContext.Users.AsPagination(1, 2, x => x.Firstname.Contains("Joe"));
+			var people = _usersDbContext.Users.AsQueryable().AsPagination(1, 2, x => x.Firstname.Contains("Joe"));
 			var peopleView = _usersDbContext.Users.AsPagination(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModel, nameof(User.Firstname), true);
 			Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
 			Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
@@ -81,6 +81,17 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
 				Id = user.Id,
 				Lastname = user.Lastname
 			};
+		}
+
+		private Ten ConverUserToUserViewModel2(User user)
+		{
+			return new Ten
+			{
+			};
+		}
+
+		public struct Ten
+		{
 		}
 
 		private UsersDbContext GetDatabaseContext()
