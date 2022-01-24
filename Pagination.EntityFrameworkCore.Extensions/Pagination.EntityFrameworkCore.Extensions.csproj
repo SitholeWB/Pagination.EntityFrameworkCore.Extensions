@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>2.1.7</Version>
+    <Version>2.1.8</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>This is a library for List Pagination on Dotnet, auto map or convert source to destination model.
 Works well with Entity Framework as an extension and supports asynchronous calls.
