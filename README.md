@@ -55,7 +55,8 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 		{
 			using (var context = new CollegeDbContext())
 			{
-				return await _dbContext.Countries.AsPaginationAsync(page, limit, sortColumn: "Name", orderByDescending: true);
+				return await _dbContext.Countries.AsPaginationAsync<Country>(page, limit, sortColumn: "Name", orderByDescending: true);
+				// OR return await _dbContext.AsPaginationAsync<Country>(page, limit, sortColumn: "Name", orderByDescending: true);
 			}
 		}
     
@@ -65,7 +66,8 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 		{
 			using (var context = new CollegeDbContext())
 			{
-				return await _dbContext.Countries.Where(x => x.DateAdded > DateTimeOffset.UtcNow.AddDays(-30)).AsPaginationAsync(page, limit, sortColumn: "Name", orderByDescending: true);
+				return await _dbContext.Countries.Where(x => x.DateAdded > DateTimeOffset.UtcNow.AddDays(-30)).AsPaginationAsync<Country>(page, limit, sortColumn: "Name", orderByDescending: true);
+				//OR return await _dbContext.Where(x => x.DateAdded > DateTimeOffset.UtcNow.AddDays(-30)).AsPaginationAsync<Country>(page, limit, sortColumn: "Name", orderByDescending: true);
 			}
 		}
     
@@ -75,7 +77,8 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 		{
 			using (var context = new CollegeDbContext())
 			{
-				return await _dbContext.Countries.AsPaginationAsync(page, limit, x => x.Name.Contains(searchText), sortColumn: "Name", orderByDescending: true);
+				return await _dbContext.Countries.AsPaginationAsync<Country>(page, limit, x => x.Name.Contains(searchText), sortColumn: "Name", orderByDescending: true);
+				// OR return await _dbContext.AsPaginationAsync<Country>(page, limit, x => x.Name.Contains(searchText), sortColumn: "Name", orderByDescending: true);
 			}
 		}
     
@@ -112,7 +115,8 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 			using (var context = new CollegeDbContext())
 			{
 				//Pass 'ConverCountryToCountryViewModel' method that will map/convert source model to destination model 
-				return await _dbContext.Countries.AsPaginationAsync(page, limit, ConverCountryToCountryViewModel, sortColumn: "Name", orderByDescending: true);
+				return await _dbContext.Countries.AsPaginationAsync<Country, CountryViewModel>(page, limit, ConverCountryToCountryViewModel, sortColumn: "Name", orderByDescending: true);
+				//OR return await _dbContext.AsPaginationAsync<Country, CountryViewModel>(page, limit, ConverCountryToCountryViewModel, sortColumn: "Name", orderByDescending: true);
 			}
 		}
     
@@ -123,7 +127,8 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 			using (var context = new CollegeDbContext())
 			{
 				//Pass 'ConverCountryToCountryViewModel' method that will map/convert source model to destination model 
-				return await _dbContext.Countries.Where(x => x.DateAdded > DateTimeOffset.UtcNow.AddDays(-30)).AsPaginationAsync(page, limit, ConverCountryToCountryViewModel, sortColumn: "Name", orderByDescending: true);
+				return await _dbContext.Countries.Where(x => x.DateAdded > DateTimeOffset.UtcNow.AddDays(-30)).AsPaginationAsync<Country, CountryViewModel>(page, limit, ConverCountryToCountryViewModel, sortColumn: "Name", orderByDescending: true);
+				//OR return await _dbContext.Where(x => x.DateAdded > DateTimeOffset.UtcNow.AddDays(-30)).AsPaginationAsync<Country, CountryViewModel>(page, limit, ConverCountryToCountryViewModel, sortColumn: "Name", orderByDescending: true);
 			}
 		}
     
@@ -134,9 +139,11 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 			using (var context = new CollegeDbContext())
 			{
 				//Pass 'ConverCountryToCountryViewModel' method that will map/convert source model to destination model 
-				return await _dbContext.Countries.AsPaginationAsync(page, limit, x => x.Name.Contains(searchText), ConverCountryToCountryViewModel, sortColumn: "Name", orderByDescending: true);
+				return await _dbContext.Countries.AsPaginationAsync<Country, CountryViewModel>(page, limit, x => x.Name.Contains(searchText), ConverCountryToCountryViewModel, sortColumn: "Name", orderByDescending: true);
+				//OR return await _dbContext.AsPaginationAsync<Country, CountryViewModel>(page, limit, x => x.Name.Contains(searchText), ConverCountryToCountryViewModel, sortColumn: "Name", orderByDescending: true);
 			}
 		}
+
 		
 ```
 

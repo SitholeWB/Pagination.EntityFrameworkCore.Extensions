@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Pagination.EntityFrameworkCore.Extensions
 {
-	public class PaginationAuto<Tsource, Tdestination> where Tdestination : class
+	public class PaginationAuto<Tsource, Tdestination>
 	{
 		public PaginationAuto(Pagination<Tsource> pagination, Func<Tsource, Tdestination> convertTsourceToTdestinationMethod)
 		{
@@ -17,7 +17,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 
 		public PaginationAuto(IEnumerable<Tsource> results, long totalItems, Func<Tsource, Tdestination> convertTsourceToTdestinationMethod, int page = 1, int limit = 10)
 		{
-			ValidateInputs(page, limit);
+			PaginationExtensionsHelper.ValidateInputs(page, limit);
 
 			var startIndex = (page - 1) * limit;
 			var endIndex = page * limit;
@@ -36,18 +36,6 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			}
 
 			TotalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)limit);
-		}
-
-		private static void ValidateInputs(int page, int limit)
-		{
-			if (limit <= 0)
-			{
-				throw new PaginationException("Limit must be greater than 0");
-			}
-			if (page <= 0)
-			{
-				throw new PaginationException("Page must be greater than 0");
-			}
 		}
 
 		public long TotalItems { get; private set; }
