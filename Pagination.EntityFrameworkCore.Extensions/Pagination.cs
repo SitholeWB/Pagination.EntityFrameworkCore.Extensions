@@ -16,6 +16,10 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			{
 				throw new PaginationException("Page must be greater than 0");
 			}
+			if (totalItems <= 0)
+			{
+				throw new PaginationException("TotalItems must be greater than 0");
+			}
 
 			var startIndex = (page - 1) * limit;
 			var endIndex = page * limit;
