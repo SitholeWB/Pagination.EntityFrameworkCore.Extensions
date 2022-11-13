@@ -15,7 +15,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			TotalPages = pagination?.TotalPages ?? 0;
 		}
 
-		public PaginationAuto(IEnumerable<Tsource> results, long totalItems, Func<Tsource, Tdestination> convertTsourceToTdestinationMethod, int page = 1, int limit = 10)
+		public PaginationAuto(IEnumerable<Tsource> results, long totalItems, Func<Tsource, Tdestination> convertTsourceToTdestinationMethod, int page = 1, int limit = 10, bool applyPageAndLimitToResults = false)
 		{
 			PaginationExtensionsHelper.ValidateInputs(page, limit);
 
@@ -25,7 +25,10 @@ namespace Pagination.EntityFrameworkCore.Extensions
 			TotalItems = totalItems;
 			CurrentPage = page;
 			Results = results?.Select(a => convertTsourceToTdestinationMethod(a)) ?? Enumerable.Empty<Tdestination>();
-
+			if (applyPageAndLimitToResults)
+			{
+				Results = Results.Skip(startIndex).Take(limit);
+			}
 			if (startIndex > 0)
 			{
 				PreviousPage = page - 1;

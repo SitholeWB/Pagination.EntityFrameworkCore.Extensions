@@ -67,7 +67,6 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 			using (var context = new CollegeDbContext())
 			{
 				return await _dbContext.Countries.Where(x => x.DateAdded > DateTimeOffset.UtcNow.AddDays(-30)).AsPaginationAsync<Country>(page, limit, sortColumn: "Name", orderByDescending: true);
-				
 			}
 		}
     

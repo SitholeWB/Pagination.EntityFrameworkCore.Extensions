@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>2.3.0.0</Version>
+    <Version>2.3.1.0</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>This is a library for List Pagination on Dotnet, auto map or convert source to destination model.
 Works well with Entity Framework as an extension and supports asynchronous calls.
@@ -25,6 +25,7 @@ More example of project URL https://github.com/SitholeWB/Pagination.EntityFramew
     <NeutralLanguage>en-001</NeutralLanguage>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
+    <Authors>Welcome Sithole</Authors>
   </PropertyGroup>
 
   <ItemGroup>
