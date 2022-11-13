@@ -26,7 +26,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 
 			TotalItems = totalItems;
 			CurrentPage = page;
-			Results = results ?? Enumerable.Empty<T>();
+			Results = results.Skip(startIndex).Take(limit) ?? Enumerable.Empty<T>();
 
 			if (startIndex > 0)
 			{
@@ -39,7 +39,6 @@ namespace Pagination.EntityFrameworkCore.Extensions
 
 			TotalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)limit);
 		}
-
 		public long TotalItems { get; private set; }
 		public int CurrentPage { get; private set; }
 		public int? NextPage { get; private set; }
