@@ -41,15 +41,21 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 ```C#
 
 		// Use only Pagination Model
-		//NOTE: There is optional boolean param applyPageAndLimitToResults if you want to apply page and limit to results
   		public async Task<Pagination<Country>> GetCountriesAsync(int page, int limit)
 		{
 			var list  = await _dbContext.Countries.Skip((page - 1) * limit).Take(limit).ToListAsync();
 			var totalItems  = await _dbContext.Countries.CountAsync();
-
 			return new Pagination<Country>(list, totalItems, page, limit);
+
+			//OR, there is optional boolean param applyPageAndLimitToResults if you want to apply page and limit to results
+			/*
+			var list  = await _dbContext.Countries.ToListAsync();
+			var totalItems  = await _dbContext.Countries.CountAsync();
+
+			return new Pagination<Country>(list, totalItems, page, limit, applyPageAndLimitToResults: true);
+			*/
 		}
-		
+
 		// OR use as Entity Framework extension
 		
 		private async Task<Pagination<Country>> GetAllCountriesAsync(int page, int limit)
@@ -100,13 +106,19 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 		}
 		
 		// Use only Pagination Model
-		//NOTE: There is optional boolean param applyPageAndLimitToResults if you want to apply page and limit to results
   		public async Task<PaginationAuto<Country, CountryViewModel>> GetCountriesAsync(int page, int limit)
 		{
 			var list  = await _dbContext.Countries.Skip((page - 1) * limit).Take(limit).ToListAsync();
 			var totalItems  = await _dbContext.Countries.CountAsync();
   			//Pass 'ConverCountryToCountryViewModel' method that will map/convert source model to destination model 
 			return new PaginationAuto<Country, CountryViewModel>(list, totalItems, ConverCountryToCountryViewModel, page, limit);
+
+			//OR, there is optional boolean param applyPageAndLimitToResults if you want to apply page and limit to results
+			/*
+			var list  = await _dbContext.Countries.ToListAsync();
+			var totalItems  = await _dbContext.Countries.CountAsync();
+			return new PaginationAuto<Country, CountryViewModel>(list, totalItems, ConverCountryToCountryViewModel, page, limit, applyPageAndLimitToResults: true);
+			*/
 		}
 		
 		// OR use as Entity Framework extension
