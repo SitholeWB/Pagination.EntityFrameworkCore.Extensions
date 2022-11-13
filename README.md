@@ -41,6 +41,7 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 ```C#
 
 		// Use only Pagination Model
+		//NOTE: There is optional boolean param applyPageAndLimitToResults if you want to apply page and limit to results
   		public async Task<Pagination<Country>> GetCountriesAsync(int page, int limit)
 		{
 			var list  = await _dbContext.Countries.Skip((page - 1) * limit).Take(limit).ToListAsync();
@@ -99,6 +100,7 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 		}
 		
 		// Use only Pagination Model
+		//NOTE: There is optional boolean param applyPageAndLimitToResults if you want to apply page and limit to results
   		public async Task<PaginationAuto<Country, CountryViewModel>> GetCountriesAsync(int page, int limit)
 		{
 			var list  = await _dbContext.Countries.Skip((page - 1) * limit).Take(limit).ToListAsync();
