@@ -36,6 +36,29 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
 		}
 
 		[Test]
+		public async Task PaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnZeroExpected()
+		{
+			var paginated = default(Pagination<string>);
+			Assert.DoesNotThrow(() =>
+			{
+				paginated = new Pagination<string>(new string[] { "one", "two" }, 0, 1, 0, true);
+			});
+
+			Assert.AreEqual(0, paginated.TotalItems);
+			Assert.AreEqual(0, paginated.TotalPages);
+			Assert.AreEqual(0, paginated.Results.Count());
+		}
+
+		[Test]
+		public async Task AsPaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnZeroExpected()
+		{
+			var people = await _usersDbContext.Users.AsPaginationAsync(1, 0);
+			var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 0, ConverUserToUserViewModel);
+			Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
+			Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
+		}
+
+		[Test]
 		public async Task AsPaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnExpected()
 		{
 			var people = await _usersDbContext.Users.AsPaginationAsync(1, 2);

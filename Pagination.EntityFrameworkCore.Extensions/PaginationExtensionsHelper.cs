@@ -9,10 +9,6 @@ namespace Pagination.EntityFrameworkCore.Extensions
 	{
 		public static void ValidateInputs(int page, int limit)
 		{
-			if (limit <= 0)
-			{
-				throw new PaginationException("Limit must be greater than 0");
-			}
 			if (page <= 0)
 			{
 				throw new PaginationException("Page must be greater than 0");

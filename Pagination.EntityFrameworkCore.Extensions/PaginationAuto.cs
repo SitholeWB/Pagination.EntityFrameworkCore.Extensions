@@ -38,7 +38,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 				NextPage = page + 1;
 			}
 
-			TotalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)limit);
+			TotalPages = limit > 0 ? (int)Math.Ceiling((decimal)totalItems / (decimal)limit) : 0;
 		}
 
 		public long TotalItems { get; private set; }
