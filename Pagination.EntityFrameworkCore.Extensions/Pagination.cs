@@ -8,17 +8,9 @@ namespace Pagination.EntityFrameworkCore.Extensions
 	{
 		public Pagination(IEnumerable<T> results, long totalItems, int page = 1, int limit = 10, bool applyPageAndLimitToResults = false)
 		{
-			if (limit <= 0)
-			{
-				throw new PaginationException("Limit must be greater than 0");
-			}
 			if (page <= 0)
 			{
 				throw new PaginationException("Page must be greater than 0");
-			}
-			if (totalItems <= 0)
-			{
-				throw new PaginationException("TotalItems must be greater than 0");
 			}
 
 			var startIndex = (page - 1) * limit;
@@ -40,7 +32,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 				NextPage = page + 1;
 			}
 
-			TotalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)limit);
+			TotalPages = limit > 0 ? (int)Math.Ceiling((decimal)totalItems / (decimal)limit) : 0;
 		}
 
 		public long TotalItems { get; private set; }
