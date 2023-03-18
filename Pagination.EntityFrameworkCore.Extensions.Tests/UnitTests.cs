@@ -36,7 +36,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
 		}
 
 		[Test]
-		public async Task PaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnZeroExpected()
+		public async Task PaginationAsync_Given_ShouldReturnZeroExpected()
 		{
 			var paginated = default(Pagination<string>);
 			Assert.DoesNotThrow(() =>
@@ -47,6 +47,76 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
 			Assert.AreEqual(0, paginated.TotalItems);
 			Assert.AreEqual(0, paginated.TotalPages);
 			Assert.AreEqual(0, paginated.Results.Count());
+		}
+
+		[Test]
+		public async Task PaginationAsync_Given10Limit_ShouldReturnTwoResultsAndZeroPages()
+		{
+			var paginated = default(Pagination<string>);
+			Assert.DoesNotThrow(() =>
+			{
+				paginated = new Pagination<string>(new string[] { "one", "two" }, 0, 1, 10, true);
+			});
+
+			Assert.AreEqual(0, paginated.TotalItems);
+			Assert.AreEqual(0, paginated.TotalPages);
+			Assert.AreEqual(2, paginated.Results.Count());
+		}
+
+		[Test]
+		public async Task PaginationAsync_GivenFalse_ShouldReturnTwoResultsAndZeroPages()
+		{
+			var paginated = default(Pagination<string>);
+			Assert.DoesNotThrow(() =>
+			{
+				paginated = new Pagination<string>(new string[] { "one", "two" }, 0, 1, 10, false);
+			});
+
+			Assert.AreEqual(0, paginated.TotalItems);
+			Assert.AreEqual(0, paginated.TotalPages);
+			Assert.AreEqual(2, paginated.Results.Count());
+		}
+
+		[Test]
+		public async Task PaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnZeroExpected()
+		{
+			var paginated = default(PaginationAuto<User, UserViewModel>);
+			Assert.DoesNotThrow(() =>
+			{
+				paginated = new PaginationAuto<User, UserViewModel>(
+					new User[] {
+						new User {
+							Firstname = "Jobe",
+							Lastname = "Sithole",
+							Id= Guid.NewGuid(),
+						}
+					}, 0, ConverUserToUserViewModel, 1, 0, true);
+			});
+
+			Assert.AreEqual(0, paginated.TotalItems);
+			Assert.AreEqual(0, paginated.TotalPages);
+			Assert.AreEqual(0, paginated.Results.Count());
+		}
+
+		[Test]
+		public async Task PaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnOneExpected()
+		{
+			var paginated = default(PaginationAuto<User, UserViewModel>);
+			Assert.DoesNotThrow(() =>
+			{
+				paginated = new PaginationAuto<User, UserViewModel>(
+					new User[] {
+						new User {
+							Firstname = "Jobe",
+							Lastname = "Sithole",
+							Id= Guid.NewGuid(),
+						}
+					}, 1, ConverUserToUserViewModel, 1, 10, true);
+			});
+
+			Assert.AreEqual(1, paginated.TotalItems);
+			Assert.AreEqual(1, paginated.TotalPages);
+			Assert.AreEqual(1, paginated.Results.Count());
 		}
 
 		[Test]
