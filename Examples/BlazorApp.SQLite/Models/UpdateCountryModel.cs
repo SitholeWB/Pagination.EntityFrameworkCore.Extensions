@@ -1,4 +1,4 @@
-﻿namespace WebApi.Nodels
+﻿namespace BlazorApp.SQLite.Models
 {
 	public class UpdateCountryModel
 	{

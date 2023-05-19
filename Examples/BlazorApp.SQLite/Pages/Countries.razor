@@ -1,0 +1,109 @@
+﻿@page "/countries"
+
+<PageTitle>Countries</PageTitle>
+
+@using BlazorApp.SQLite.DTOs;
+@using BlazorApp.SQLite.Data
+@using BlazorApp.SQLite.Entities;
+@using BlazorApp.SQLite.Models;
+@using BlazorApp.SQLite.Services;
+@using Pagination.EntityFrameworkCore.Extensions;
+@inject CountryService CountryService
+
+<h1>Countries </h1>
+
+<EditForm Model="@newCountry" OnSubmit="@AddCountry">
+    <InputText id="name" @bind-Value="newCountry.Name" />
+   
+    <button class="btn btn-primary" type="submit">Add Country</button>
+</EditForm>
+<span style="color: red">@errorMessage</span>
+
+
+@if (countries == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date Added</th>
+                <th>Last Modified Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in countries.Results)
+            {
+                <tr>
+                    <td>@forecast.Name</td>
+                    <td>@forecast.DateAdded.DateTime.ToLongDateString()</td>
+                    <td>@forecast.LastModifiedDate.DateTime.ToLongDateString()</td>
+                </tr>
+            }
+        </tbody>
+       
+    </table>
+    <p style="text-align: center">
+        @if(countries.PreviousPage.HasValue)
+        {
+            <button style="text-align: center" class="btn" @onclick="() =>OnPaginationAsync(countries.PreviousPage.Value)">Previous</button>
+        }
+        @for(int i = 1; i <= countries.TotalPages; i++)
+        {
+            int page = i;
+            if (currentPage == page)
+            {
+                <button style="text-align: center" class="btn btn-primary" @onclick="() =>OnPaginationAsync(page)">@i</button>
+            }
+            else
+            {
+                <button style="text-align: center" class="btn" @onclick="() =>OnPaginationAsync(page)">@i</button>
+            }
+        }
+        @if (countries.NextPage.HasValue)
+        {
+            <button style="text-align: center" class="btn" @onclick="() =>OnPaginationAsync(countries.NextPage.Value)">Next</button>
+        }
+    </p>
+}
+
+@code {
+    private PaginationAuto<Country, CountryDto>? countries;
+    private AddCountryModel newCountry = new AddCountryModel { Name = "" };
+    private string errorMessage = "";
+    private int pageLimit = 5;
+    private int currentPage = 1;
+    private async Task AddCountry()
+    {
+        if (string.IsNullOrWhiteSpace(newCountry?.Name))
+        {
+            errorMessage = "Country name must be at least 2 letters";
+            return;
+        }
+        if(newCountry?.Name?.Length < 2)
+        {
+            errorMessage = "Country name must be at least 2 letters";
+            return;
+        }
+        errorMessage = "";
+        await CountryService.AddCountryAsync(newCountry);
+        newCountry.Name = "";
+        countries = await CountryService.GetCountries(currentPage, pageLimit);
+
+    }
+    private async Task OnPaginationAsync(int page = 1)
+    {
+        countries = await CountryService.GetCountries(page, pageLimit);
+        currentPage = page;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        countries = await CountryService.GetCountries(currentPage, pageLimit);
+    }
+    
+  
+
+}

@@ -4,7 +4,7 @@ using WebApi.Data;
 using WebApi.DTOs;
 using WebApi.Entities;
 using WebApi.Helpers;
-using WebApi.Nodels;
+using WebApi.Models;
 
 namespace WebApi.Controllers
 {

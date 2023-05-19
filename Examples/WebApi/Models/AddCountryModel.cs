@@ -1,4 +1,4 @@
-﻿namespace WebApi.Nodels
+﻿namespace WebApi.Models
 {
 	public class AddCountryModel
 	{

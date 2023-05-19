@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{59
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "Examples\WebApi\WebApi.csproj", "{9F5F523E-3D47-4282-B7DA-629FBF4EE385}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp.SQLite", "Examples\BlazorApp.SQLite\BlazorApp.SQLite.csproj", "{781F7F7A-C4A3-4005-9C19-FE804408BB73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,12 +31,17 @@ Global
 		{9F5F523E-3D47-4282-B7DA-629FBF4EE385}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F5F523E-3D47-4282-B7DA-629FBF4EE385}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F5F523E-3D47-4282-B7DA-629FBF4EE385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{781F7F7A-C4A3-4005-9C19-FE804408BB73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{781F7F7A-C4A3-4005-9C19-FE804408BB73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{781F7F7A-C4A3-4005-9C19-FE804408BB73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{781F7F7A-C4A3-4005-9C19-FE804408BB73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9F5F523E-3D47-4282-B7DA-629FBF4EE385} = {5930A197-9F82-4221-81F0-0FE431F5DDB6}
+		{781F7F7A-C4A3-4005-9C19-FE804408BB73} = {5930A197-9F82-4221-81F0-0FE431F5DDB6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D410B17-1972-480B-8183-B9573DC1989B}
