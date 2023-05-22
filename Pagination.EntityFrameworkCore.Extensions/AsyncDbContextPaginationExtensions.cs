@@ -73,7 +73,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
             return new Pagination<Tdestination>(results?.Select(a => convertTsourceToTdestinationMethod(a)) ?? Enumerable.Empty<Tdestination>(), totalItems, page, limit);
         }
 
-        public static async Task<PaginationAuto<TSource, Tdestination>> AsPaginationAsync<TSource, Tdestination>(this DbContext dbContext, int page, int limit, Expression<Func<TSource, bool>> expression, Func<TSource, Tdestination> convertTsourceToTdestinationMethod, string sortColumn = "", bool orderByDescending = false) where TSource : class
+        public static async Task<Pagination<Tdestination>> AsPaginationAsync<TSource, Tdestination>(this DbContext dbContext, int page, int limit, Expression<Func<TSource, bool>> expression, Func<TSource, Tdestination> convertTsourceToTdestinationMethod, string sortColumn = "", bool orderByDescending = false) where TSource : class
         {
             PaginationExtensionsHelper.ValidateInputs(page, limit);
 
@@ -87,7 +87,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
             {
                 results = await dbContext.Set<TSource>().Where(expression).Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
             }
-            return new PaginationAuto<TSource, Tdestination>(results, totalItems, convertTsourceToTdestinationMethod, page, limit);
+            return new Pagination<Tdestination>(results?.Select(a => convertTsourceToTdestinationMethod(a)) ?? Enumerable.Empty<Tdestination>(), totalItems, page, limit);
         }
 
         // PaginationAuto Async Mapping
