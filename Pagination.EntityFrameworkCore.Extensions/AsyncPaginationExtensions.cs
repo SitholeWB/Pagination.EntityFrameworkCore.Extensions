@@ -82,7 +82,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
                 source = orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn));
             }
             var results = await source.Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
-            var destination = await results.Select(async ev => await convertTsourceToTdestinationMethod(ev)).WhenAll();
+            var destination = await results.Select(async ev => await convertTsourceToTdestinationMethod(ev)).WhenAll().ConfigureAwait(false);
             return new Pagination<Tdestination>(destination, totalItems, page, limit);
         }
 
@@ -100,7 +100,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
             {
                 results = await source.Where(expression).Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
             }
-            var destination = await results.Select(async ev => await convertTsourceToTdestinationMethod(ev)).WhenAll();
+            var destination = await results.Select(async ev => await convertTsourceToTdestinationMethod(ev)).WhenAll().ConfigureAwait(false);
             return new Pagination<Tdestination>(destination, totalItems, page, limit);
         }
     }
