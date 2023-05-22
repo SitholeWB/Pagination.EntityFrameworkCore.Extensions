@@ -207,7 +207,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         [Test]
         public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModelAsync_ShouldReturnFiltered()
         {
-            var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModelAsync);
+            var peopleView = await _usersDbContext.AsPaginationAsync<User, AuthUserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), x => ConverUserToUserViewModelAsync(x, new AuthUser { Firstname = "Joe" }));
             Assert.AreEqual(1, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
         }
@@ -263,6 +263,20 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
             };
         }
 
+        private async Task<AuthUserViewModel> ConverUserToUserViewModelAsync(User user, AuthUser authUser)
+        {
+            var seconds = new Random().Next(2, 7);
+            await Task.Delay(TimeSpan.FromSeconds(seconds));
+            var personMatched = await _usersDbContext.Users.FirstOrDefaultAsync(x => x.Firstname == authUser.Firstname);
+            return new AuthUserViewModel
+            {
+                Firstname = user.Firstname + " ---view",
+                Id = user.Id,
+                Lastname = user.Lastname,
+                IsAuthUser = user.Id.Equals(personMatched?.Id)
+            };
+        }
+
         private UsersDbContext GetDatabaseContext()
         {
             var options = new DbContextOptionsBuilder<UsersDbContext>()
@@ -272,11 +286,21 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
             return databaseContext;
         }
 
+        public class AuthUser
+        {
+            public string Firstname { get; set; }
+        }
+
         public class UserViewModel
         {
             public Guid Id { get; set; }
             public string Firstname { get; set; }
             public string Lastname { get; set; }
+        }
+
+        public class AuthUserViewModel : UserViewModel
+        {
+            public bool IsAuthUser { get; set; }
         }
     }
 }
