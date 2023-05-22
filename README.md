@@ -158,7 +158,7 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 		}
 
 		// With extra parameter/s
-			private async Task<CountryViewModel> ConverCountryToCountryViewModelAsync(Country country, Guid userId)
+		private async Task<CountryViewModel> ConverCountryToCountryViewModelAsync(Country country, Guid userId)
 		{
 		//Some async processing like sending audit log somewhere
 		/*
@@ -171,7 +171,7 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 			};
 		}
 		//Then auto map like this:
-			private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, int limit, string searchText)
+		private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, int limit, string searchText)
 		{
 			using (var context = new CollegeDbContext())
 			{
