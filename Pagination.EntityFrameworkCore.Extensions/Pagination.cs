@@ -4,42 +4,52 @@ using System.Linq;
 
 namespace Pagination.EntityFrameworkCore.Extensions
 {
-	public class Pagination<T>
-	{
-		public Pagination(IEnumerable<T> results, long totalItems, int page = 1, int limit = 10, bool applyPageAndLimitToResults = false)
-		{
-			if (page <= 0)
-			{
-				throw new PaginationException("Page must be greater than 0");
-			}
+    public class Pagination<T>
+    {
+        public Pagination(Pagination<T> pagination)
+        {
+            TotalItems = pagination.TotalPages;
+            CurrentPage = pagination.CurrentPage;
+            NextPage = pagination.NextPage;
+            PreviousPage = pagination.PreviousPage;
+            TotalPages = pagination.TotalPages;
+            Results = pagination.Results;
+        }
 
-			var startIndex = (page - 1) * limit;
-			var endIndex = page * limit;
+        public Pagination(IEnumerable<T> results, long totalItems, int page = 1, int limit = 10, bool applyPageAndLimitToResults = false)
+        {
+            if (page <= 0)
+            {
+                throw new PaginationException("Page must be greater than 0");
+            }
 
-			TotalItems = totalItems;
-			CurrentPage = page;
-			Results = results ?? Enumerable.Empty<T>();
-			if (applyPageAndLimitToResults)
-			{
-				Results = Results.Skip(startIndex).Take(limit);
-			}
-			if (startIndex > 0)
-			{
-				PreviousPage = page - 1;
-			}
-			if (endIndex < totalItems)
-			{
-				NextPage = page + 1;
-			}
+            var startIndex = (page - 1) * limit;
+            var endIndex = page * limit;
 
-			TotalPages = limit > 0 ? (int)Math.Ceiling((decimal)totalItems / (decimal)limit) : 0;
-		}
+            TotalItems = totalItems;
+            CurrentPage = page;
+            Results = results ?? Enumerable.Empty<T>();
+            if (applyPageAndLimitToResults)
+            {
+                Results = Results.Skip(startIndex).Take(limit);
+            }
+            if (startIndex > 0)
+            {
+                PreviousPage = page - 1;
+            }
+            if (endIndex < totalItems)
+            {
+                NextPage = page + 1;
+            }
 
-		public long TotalItems { get; private set; }
-		public int CurrentPage { get; private set; }
-		public int? NextPage { get; private set; }
-		public int? PreviousPage { get; private set; }
-		public int TotalPages { get; private set; }
-		public IEnumerable<T> Results { get; private set; }
-	}
+            TotalPages = limit > 0 ? (int)Math.Ceiling((decimal)totalItems / (decimal)limit) : 0;
+        }
+
+        public long TotalItems { get; private set; }
+        public int CurrentPage { get; private set; }
+        public int? NextPage { get; private set; }
+        public int? PreviousPage { get; private set; }
+        public int TotalPages { get; private set; }
+        public IEnumerable<T> Results { get; private set; }
+    }
 }

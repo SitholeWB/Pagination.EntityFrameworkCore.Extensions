@@ -138,6 +138,15 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
+        public async Task AsPaginationAsync_Given_ConverUserToUserViewModelAsync_ShouldReturnExpected()
+        {
+            var people = await _usersDbContext.Users.AsPaginationAsync(1, 2);
+            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, ConverUserToUserViewModelAsync);
+            Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
+            Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
+        }
+
+        [Test]
         public void AsPagination_Given_ConverUserToUserViewModel_ShouldReturnExpected()
         {
             var people = _usersDbContext.Users.AsPagination(1, 2);
@@ -166,6 +175,16 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
             Assert.AreEqual(0, peopleView.Results.Count(x => !x.Firstname.Contains("Joe")));
         }
 
+        [Test]
+        public async Task AsPaginationAsync_Given_ConverUserToUserViewModelAsync_ShouldReturnFilteredAndSorted()
+        {
+            var people = await _usersDbContext.Users.AsPaginationAsync<User>(1, 2, x => x.Firstname.Contains("Joe"));
+            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModelAsync);
+            Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
+            Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
+            Assert.AreEqual(0, peopleView.Results.Count(x => !x.Firstname.Contains("Joe")));
+        }
+
         //DbContext
         [Test]
         public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModel_ShouldReturnExpected()
@@ -173,6 +192,23 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
             var people = await _usersDbContext.AsPaginationAsync<User>(1, 2);
             var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, ConverUserToUserViewModel);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
+            Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
+        }
+
+        [Test]
+        public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModelAsync_ShouldReturnExpected()
+        {
+            var people = await _usersDbContext.AsPaginationAsync<User>(1, 2);
+            var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, ConverUserToUserViewModelAsync);
+            Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
+            Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
+        }
+
+        [Test]
+        public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModelAsync_ShouldReturnFiltered()
+        {
+            var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModelAsync);
+            Assert.AreEqual(1, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
         }
 
@@ -215,15 +251,16 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
             };
         }
 
-        private Ten ConverUserToUserViewModel2(User user)
+        private async Task<UserViewModel> ConverUserToUserViewModelAsync(User user)
         {
-            return new Ten
+            var seconds = new Random().Next(2, 7);
+            await Task.Delay(TimeSpan.FromSeconds(seconds));
+            return new UserViewModel
             {
+                Firstname = user.Firstname + " ---view",
+                Id = user.Id,
+                Lastname = user.Lastname
             };
-        }
-
-        public struct Ten
-        {
         }
 
         private UsersDbContext GetDatabaseContext()
@@ -232,7 +269,6 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
             var databaseContext = new UsersDbContext(options);
-            //databaseContext.Database.EnsureCreated();
             return databaseContext;
         }
 
