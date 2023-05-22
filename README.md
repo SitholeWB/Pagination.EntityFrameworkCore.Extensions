@@ -157,6 +157,30 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 			}
 		}
 
+		// With extra parameter/s
+			private async Task<CountryViewModel> ConverCountryToCountryViewModelAsync(Country country, Guid userId)
+		{
+		//Some async processing like sending audit log somewhere
+		/*
+			await _someLoggingService.LogAsync(userId, country);
+		*/
+			return new CountryViewModel
+			{
+				name = user.Name,
+				Id = user.Id
+			};
+		}
+		//Then auto map like this:
+			private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, int limit, string searchText)
+		{
+			using (var context = new CollegeDbContext())
+			{
+				//Pass 'ConverCountryToCountryViewModelAsync' method that will map/convert source model to destination model 
+				return await _dbContext.Countries.AsPaginationAsync<Country, CountryViewModel>(page, limit, x => x.Name.Contains(searchText), x => ConverCountryToCountryViewModelAsync(x, Guid.Empty), sortColumn: "Name", orderByDescending: true);
+				//OR return await _dbContext.AsPaginationAsync<Country, CountryViewModel>(page, limit, x => x.Name.Contains(searchText),  x => ConverCountryToCountryViewModelAsync(x, Guid.Empty), sortColumn: "Name", orderByDescending: true);
+			}
+		}
+		
 		
 ```
 
