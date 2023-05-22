@@ -64,7 +64,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task PaginationAsync_GivenFalse_ShouldReturnTwoResultsAndZeroPages()
+        public void PaginationAsync_GivenFalse_ShouldReturnTwoResultsAndZeroPages()
         {
             var paginated = default(Pagination<string>);
             Assert.DoesNotThrow(() =>
