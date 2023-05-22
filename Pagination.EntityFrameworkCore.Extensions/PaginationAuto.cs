@@ -4,8 +4,10 @@ using System.Linq;
 
 namespace Pagination.EntityFrameworkCore.Extensions
 {
+    [Obsolete("Simplify your code by using Pagination")]
     public class PaginationAuto<Tsource, Tdestination> : Pagination<Tdestination>
     {
+        [Obsolete("Simplify your code by using Pagination")]
         public PaginationAuto(Pagination<Tsource> pagination, Func<Tsource, Tdestination> convertTsourceToTdestinationMethod)
         : base(pagination.Results?.Select(x => convertTsourceToTdestinationMethod(x)) ?? new List<Tdestination>(), pagination.TotalItems, pagination.CurrentPage, (int)pagination.TotalItems, false)
         {
@@ -16,6 +18,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
             TotalPages = pagination?.TotalPages ?? 0;
         }
 
+        [Obsolete("Simplify your code by using Pagination")]
         public PaginationAuto(IEnumerable<Tsource> results, long totalItems, Func<Tsource, Tdestination> convertTsourceToTdestinationMethod, int page = 1, int limit = 10, bool applyPageAndLimitToResults = false)
        : base(results?.Select(x => convertTsourceToTdestinationMethod(x)) ?? new List<Tdestination>(), totalItems, page, limit, applyPageAndLimitToResults)
         {
