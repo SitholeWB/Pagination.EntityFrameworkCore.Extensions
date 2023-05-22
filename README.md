@@ -106,24 +106,24 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
 		}
 		
 		// Use only Pagination Model
-  		public async Task<PaginationAuto<Country, CountryViewModel>> GetCountriesAsync(int page, int limit)
+  		public async Task<Pagination<CountryViewModel>> GetCountriesAsync(int page, int limit)
 		{
 			var list  = await _dbContext.Countries.Skip((page - 1) * limit).Take(limit).ToListAsync();
 			var totalItems  = await _dbContext.Countries.CountAsync();
   			//Pass 'ConverCountryToCountryViewModel' method that will map/convert source model to destination model 
-			return new PaginationAuto<Country, CountryViewModel>(list, totalItems, ConverCountryToCountryViewModel, page, limit);
+			return new Pagination<CountryViewModel>(list, totalItems, ConverCountryToCountryViewModel, page, limit);
 
 			//OR, there is optional boolean param applyPageAndLimitToResults if you want to apply page and limit to results
 			/*
 			var list  = await _dbContext.Countries.ToListAsync();
 			var totalItems  = await _dbContext.Countries.CountAsync();
-			return new PaginationAuto<Country, CountryViewModel>(list, totalItems, ConverCountryToCountryViewModel, page, limit, applyPageAndLimitToResults: true);
+			return new Pagination<CountryViewModel>(list, totalItems, ConverCountryToCountryViewModel, page, limit, applyPageAndLimitToResults: true);
 			*/
 		}
 		
 		// OR use as Entity Framework extension
 		
-		private async Task<PaginationAuto<Country, CountryViewModel>> GetAllCountriesAsync(int page, int limit)
+		private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, int limit)
 		{
 			using (var context = new CollegeDbContext())
 			{
@@ -135,7 +135,7 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
     
 		//OR add filter before pagination
     
-    		private async Task<PaginationAuto<Country, CountryViewModel>> GetAllCountriesAsync(int page, int limit)
+    		private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, int limit)
 		{
 			using (var context = new CollegeDbContext())
 			{
@@ -147,7 +147,7 @@ Install-Package Pagination.EntityFrameworkCore.Extensions
     
 		//OR with supported filter
     
-    		private async Task<PaginationAuto<Country, CountryViewModel>> GetAllCountriesAsync(int page, int limit, string searchText)
+    		private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, int limit, string searchText)
 		{
 			using (var context = new CollegeDbContext())
 			{

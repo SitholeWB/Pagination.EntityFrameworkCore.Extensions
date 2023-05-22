@@ -78,7 +78,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task PaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnZeroExpected()
+        public async Task PaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnZeroExpected()
         {
             var paginated = default(PaginationAuto<User, UserViewModel>);
             Assert.DoesNotThrow(() =>
@@ -90,7 +90,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
                             Lastname = "Sithole",
                             Id= Guid.NewGuid(),
                         }
-                    }, 0, ConvertUserToUserViewModel, 1, 0, true);
+                    }, 0, ConverUserToUserViewModel, 1, 0, true);
             });
 
             Assert.AreEqual(0, paginated.TotalItems);
@@ -99,7 +99,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task PaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnOneExpected()
+        public async Task PaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnOneExpected()
         {
             var paginated = default(PaginationAuto<User, UserViewModel>);
             Assert.DoesNotThrow(() =>
@@ -111,7 +111,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
                             Lastname = "Sithole",
                             Id= Guid.NewGuid(),
                         }
-                    }, 1, ConvertUserToUserViewModel, 1, 10, true);
+                    }, 1, ConverUserToUserViewModel, 1, 10, true);
             });
 
             Assert.AreEqual(1, paginated.TotalItems);
@@ -120,66 +120,66 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task AsPaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnZeroExpected()
+        public async Task AsPaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnZeroExpected()
         {
             var people = await _usersDbContext.Users.AsPaginationAsync(1, 0);
-            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 0, ConvertUserToUserViewModel);
+            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 0, ConverUserToUserViewModel);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
         }
 
         [Test]
-        public async Task AsPaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnExpected()
+        public async Task AsPaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnExpected()
         {
             var people = await _usersDbContext.Users.AsPaginationAsync(1, 2);
-            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, ConvertUserToUserViewModel);
+            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, ConverUserToUserViewModel);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
         }
 
         [Test]
-        public async Task AsPaginationAsync_Given_ConvertUserToUserViewModelAsync_ShouldReturnExpected()
+        public async Task AsPaginationAsync_Given_ConverUserToUserViewModelAsync_ShouldReturnExpected()
         {
             var people = await _usersDbContext.Users.AsPaginationAsync(1, 2);
-            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, ConvertUserToUserViewModelAsync);
+            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, ConverUserToUserViewModelAsync);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
         }
 
         [Test]
-        public void AsPagination_Given_ConvertUserToUserViewModel_ShouldReturnExpected()
+        public void AsPagination_Given_ConverUserToUserViewModel_ShouldReturnExpected()
         {
             var people = _usersDbContext.Users.AsPagination(1, 2);
-            var peopleView = _usersDbContext.Users.AsPagination(1, 2, ConvertUserToUserViewModel);
+            var peopleView = _usersDbContext.Users.AsPagination(1, 2, ConverUserToUserViewModel);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
         }
 
         [Test]
-        public void AsPagination_GivenSearchAndOrder_ConvertUserToUserViewModel_ShouldReturnFilteredAndSorted()
+        public void AsPagination_GivenSearchAndOrder_ConverUserToUserViewModel_ShouldReturnFilteredAndSorted()
         {
             var people = _usersDbContext.Users.AsQueryable().AsPagination<User>(1, 2, x => x.Firstname.Contains("Joe"));
-            var peopleView = _usersDbContext.Users.AsPagination(1, 2, x => x.Firstname.Contains("Joe"), ConvertUserToUserViewModel, nameof(User.Firstname), true);
+            var peopleView = _usersDbContext.Users.AsPagination(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModel, nameof(User.Firstname), true);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
             Assert.AreEqual(0, peopleView.Results.Count(x => !x.Firstname.Contains("Joe")));
         }
 
         [Test]
-        public async Task AsPaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnFilteredAndSorted()
+        public async Task AsPaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnFilteredAndSorted()
         {
             var people = await _usersDbContext.Users.AsPaginationAsync<User>(1, 2, x => x.Firstname.Contains("Joe"));
-            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, x => x.Firstname.Contains("Joe"), ConvertUserToUserViewModel);
+            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModel);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
             Assert.AreEqual(0, peopleView.Results.Count(x => !x.Firstname.Contains("Joe")));
         }
 
         [Test]
-        public async Task AsPaginationAsync_Given_ConvertUserToUserViewModelAsync_ShouldReturnFilteredAndSorted()
+        public async Task AsPaginationAsync_Given_ConverUserToUserViewModelAsync_ShouldReturnFilteredAndSorted()
         {
             var people = await _usersDbContext.Users.AsPaginationAsync<User>(1, 2, x => x.Firstname.Contains("Joe"));
-            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, x => x.Firstname.Contains("Joe"), ConvertUserToUserViewModelAsync);
+            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModelAsync);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
             Assert.AreEqual(0, peopleView.Results.Count(x => !x.Firstname.Contains("Joe")));
@@ -187,61 +187,61 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
 
         //DbContext
         [Test]
-        public async Task AsPaginationAsync_DbContext_Given_ConvertUserToUserViewModel_ShouldReturnExpected()
+        public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModel_ShouldReturnExpected()
         {
             var people = await _usersDbContext.AsPaginationAsync<User>(1, 2);
-            var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, ConvertUserToUserViewModel);
+            var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, ConverUserToUserViewModel);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
         }
 
         [Test]
-        public async Task AsPaginationAsync_DbContext_Given_ConvertUserToUserViewModelAsync_ShouldReturnExpected()
+        public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModelAsync_ShouldReturnExpected()
         {
             var people = await _usersDbContext.AsPaginationAsync<User>(1, 2);
-            var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, ConvertUserToUserViewModelAsync);
+            var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, ConverUserToUserViewModelAsync);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
         }
 
         [Test]
-        public async Task AsPaginationAsync_DbContext_Given_ConvertUserToUserViewModelAsync_ShouldReturnFiltered()
+        public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModelAsync_ShouldReturnFiltered()
         {
-            var peopleView = await _usersDbContext.AsPaginationAsync<User, AuthUserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), x => ConvertUserToUserViewModelAsync(x, new AuthUser { Firstname = "Joe" }));
+            var peopleView = await _usersDbContext.AsPaginationAsync<User, AuthUserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), x => ConverUserToUserViewModelAsync(x, new AuthUser { Firstname = "Joe" }));
             Assert.AreEqual(1, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
         }
 
         [Test]
-        public void AsPagination_DbContext_Given_ConvertUserToUserViewModel_ShouldReturnExpected()
+        public void AsPagination_DbContext_Given_ConverUserToUserViewModel_ShouldReturnExpected()
         {
             var people = _usersDbContext.AsPagination<User>(1, 2);
-            var peopleView = _usersDbContext.AsPagination<User, UserViewModel>(1, 2, ConvertUserToUserViewModel);
+            var peopleView = _usersDbContext.AsPagination<User, UserViewModel>(1, 2, ConverUserToUserViewModel);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
         }
 
         [Test]
-        public void AsPagination_DbContext_GivenSearchAndOrder_ConvertUserToUserViewModel_ShouldReturnFilteredAndSorted()
+        public void AsPagination_DbContext_GivenSearchAndOrder_ConverUserToUserViewModel_ShouldReturnFilteredAndSorted()
         {
             var people = _usersDbContext.AsPagination<User>(1, 2, x => x.Firstname.Contains("Joe"));
-            var peopleView = _usersDbContext.AsPagination<User, UserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), ConvertUserToUserViewModel, nameof(User.Firstname), true);
+            var peopleView = _usersDbContext.AsPagination<User, UserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModel, nameof(User.Firstname), true);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
             Assert.AreEqual(0, peopleView.Results.Count(x => !x.Firstname.Contains("Joe")));
         }
 
         [Test]
-        public async Task AsPaginationAsync_DbContext_Given_ConvertUserToUserViewModel_ShouldReturnFilteredAndSorted()
+        public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModel_ShouldReturnFilteredAndSorted()
         {
             var people = await _usersDbContext.AsPaginationAsync<User>(1, 2, x => x.Firstname.Contains("Joe"));
-            var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), ConvertUserToUserViewModel);
+            var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModel);
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
             Assert.AreEqual(0, peopleView.Results.Count(x => !x.Firstname.Contains("Joe")));
         }
 
-        private UserViewModel ConvertUserToUserViewModel(User user)
+        private UserViewModel ConverUserToUserViewModel(User user)
         {
             return new UserViewModel
             {
@@ -251,7 +251,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
             };
         }
 
-        private async Task<UserViewModel> ConvertUserToUserViewModelAsync(User user)
+        private async Task<UserViewModel> ConverUserToUserViewModelAsync(User user)
         {
             var seconds = new Random().Next(2, 7);
             await Task.Delay(TimeSpan.FromSeconds(seconds));
@@ -263,7 +263,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
             };
         }
 
-        private async Task<AuthUserViewModel> ConvertUserToUserViewModelAsync(User user, AuthUser authUser)
+        private async Task<AuthUserViewModel> ConverUserToUserViewModelAsync(User user, AuthUser authUser)
         {
             var seconds = new Random().Next(2, 7);
             await Task.Delay(TimeSpan.FromSeconds(seconds));
