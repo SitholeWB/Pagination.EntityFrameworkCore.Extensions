@@ -65,7 +65,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
                 }
                 else
                 {
-                    var resultsAsc = await dbContext.Set<TSource>().OrderBy(p => EF.Property<object>(p, sortColumn)).Skip((page - 1) * limit).Take(limit).Take(limit).ToListAsync().ConfigureAwait(false);
+                    var resultsAsc = await dbContext.Set<TSource>().OrderBy(p => EF.Property<object>(p, sortColumn)).Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
                     return new Pagination<Tdestination>(resultsAsc?.Select(a => convertTsourceToTdestinationMethod(a)) ?? Enumerable.Empty<Tdestination>(), totalItems, page, limit);
                 }
             }

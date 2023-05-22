@@ -40,7 +40,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
         }
 
         // PaginationAuto Mapping
-        public static async Task<PaginationAuto<TSource, Tdestination>> AsPaginationAsync<TSource, Tdestination>(this IQueryable<TSource> source, int page, int limit, Func<TSource, Tdestination> convertTsourceToTdestinationMethod, string sortColumn = "", bool orderByDescending = false)
+        public static async Task<Pagination<Tdestination>> AsPaginationAsync<TSource, Tdestination>(this IQueryable<TSource> source, int page, int limit, Func<TSource, Tdestination> convertTsourceToTdestinationMethod, string sortColumn = "", bool orderByDescending = false)
         {
             PaginationExtensionsHelper.ValidateInputs(page, limit);
 
@@ -49,12 +49,12 @@ namespace Pagination.EntityFrameworkCore.Extensions
             {
                 source = orderByDescending ? source.OrderByDescending(p => EF.Property<object>(p, sortColumn)) : source.OrderBy(p => EF.Property<object>(p, sortColumn));
             }
-            var results = source.Skip((page - 1) * limit).Take(limit);
+            var results = await source.Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
 
-            return new PaginationAuto<TSource, Tdestination>(await results.ToListAsync().ConfigureAwait(false), totalItems, convertTsourceToTdestinationMethod, page, limit);
+            return new Pagination<Tdestination>(results?.Select(a => convertTsourceToTdestinationMethod(a)) ?? Enumerable.Empty<Tdestination>(), totalItems, page, limit);
         }
 
-        public static async Task<PaginationAuto<TSource, Tdestination>> AsPaginationAsync<TSource, Tdestination>(this IQueryable<TSource> source, int page, int limit, Expression<Func<TSource, bool>> expression, Func<TSource, Tdestination> convertTsourceToTdestinationMethod, string sortColumn = "", bool orderByDescending = false)
+        public static async Task<Pagination<Tdestination>> AsPaginationAsync<TSource, Tdestination>(this IQueryable<TSource> source, int page, int limit, Expression<Func<TSource, bool>> expression, Func<TSource, Tdestination> convertTsourceToTdestinationMethod, string sortColumn = "", bool orderByDescending = false)
         {
             PaginationExtensionsHelper.ValidateInputs(page, limit);
 
@@ -68,7 +68,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
             {
                 results = await source.Where(expression).Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
             }
-            return new PaginationAuto<TSource, Tdestination>(results, totalItems, convertTsourceToTdestinationMethod, page, limit);
+            return new Pagination<Tdestination>(results?.Select(a => convertTsourceToTdestinationMethod(a)) ?? Enumerable.Empty<Tdestination>(), totalItems, page, limit);
         }
 
         // PaginationAuto Async Mapping
