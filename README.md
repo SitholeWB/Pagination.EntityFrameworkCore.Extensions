@@ -58,7 +58,6 @@ public async Task<Pagination<Country>> GetCountriesAsync(int page, int limit)
 }
 
 // OR use as Entity Framework extension
-
 private async Task<Pagination<Country>> GetAllCountriesAsync(int page, int limit)
 {
 	using (var context = new CollegeDbContext())
@@ -69,8 +68,7 @@ private async Task<Pagination<Country>> GetAllCountriesAsync(int page, int limit
 }
 
 //OR add filter before pagination
-
-	private async Task<Pagination<Country>> GetAllCountriesAsync(int page, int limit)
+private async Task<Pagination<Country>> GetAllCountriesAsync(int page, int limit)
 {
 	using (var context = new CollegeDbContext())
 	{
@@ -79,8 +77,7 @@ private async Task<Pagination<Country>> GetAllCountriesAsync(int page, int limit
 }
 
 //OR with supported filter
-
-	private async Task<Pagination<Country>> GetAllCountriesAsync(int page, int limit, string searchText)
+private async Task<Pagination<Country>> GetAllCountriesAsync(int page, int limit, string searchText)
 {
 	using (var context = new CollegeDbContext())
 	{
@@ -123,7 +120,6 @@ public async Task<Pagination<CountryViewModel>> GetCountriesAsync(int page, int 
 }
 
 // OR use as Entity Framework extension
-
 private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, int limit)
 {
 	using (var context = new CollegeDbContext())
@@ -135,8 +131,7 @@ private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, 
 }
 
 //OR add filter before pagination
-
-	private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, int limit)
+private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, int limit)
 {
 	using (var context = new CollegeDbContext())
 	{
@@ -147,8 +142,7 @@ private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, 
 }
 
 //OR with supported filter
-
-	private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, int limit, string searchText)
+private async Task<Pagination<CountryViewModel>> GetAllCountriesAsync(int page, int limit, string searchText)
 {
 	using (var context = new CollegeDbContext())
 	{
