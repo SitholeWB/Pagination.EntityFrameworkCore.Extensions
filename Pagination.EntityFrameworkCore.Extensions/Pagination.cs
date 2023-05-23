@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Pagination.EntityFrameworkCore.Extensions
 {
     public class Pagination<T>
     {
+        public long TotalItems { get; private set; }
+        public int CurrentPage { get; private set; }
+        public int? NextPage { get; private set; }
+        public int? PreviousPage { get; private set; }
+        public int TotalPages { get; private set; }
+        public IEnumerable<T> Results { get; private set; }
+
         public Pagination(Pagination<T> pagination)
         {
             TotalItems = pagination.TotalPages;
@@ -45,11 +53,20 @@ namespace Pagination.EntityFrameworkCore.Extensions
             TotalPages = limit > 0 ? (int)Math.Ceiling((decimal)totalItems / (decimal)limit) : 0;
         }
 
-        public long TotalItems { get; private set; }
-        public int CurrentPage { get; private set; }
-        public int? NextPage { get; private set; }
-        public int? PreviousPage { get; private set; }
-        public int TotalPages { get; private set; }
-        public IEnumerable<T> Results { get; private set; }
+        public static Pagination<TDestination> GetPagination<TSource, TDestination>(IEnumerable<TSource> results, long totalItems, Func<TSource, TDestination> convertTSourceToTDestinationMethod, int page = 1, int limit = 10, bool applyPageAndLimitToResults = false)
+        {
+            var destinationResults = results?.Select(x => convertTSourceToTDestinationMethod(x)) ?? new List<TDestination>();
+            return new Pagination<TDestination>(destinationResults, totalItems, page, limit, applyPageAndLimitToResults);
+        }
+
+        public static async Task<Pagination<TDestination>> GetPaginationAsync<TSource, TDestination>(IEnumerable<TSource> results, long totalItems, Func<TSource, Task<TDestination>> convertTSourceToTDestinationMethod, int page = 1, int limit = 10, bool applyPageAndLimitToResults = false)
+        {
+            if (results == null)
+            {
+                return new Pagination<TDestination>(new List<TDestination>(), totalItems, page, limit, applyPageAndLimitToResults);
+            }
+            var destinationResults = await results.Select(async ev => await convertTSourceToTDestinationMethod(ev)).WhenAll().ConfigureAwait(false);
+            return new Pagination<TDestination>(destinationResults, totalItems, page, limit, applyPageAndLimitToResults);
+        }
     }
 }
