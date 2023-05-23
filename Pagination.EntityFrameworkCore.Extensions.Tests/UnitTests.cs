@@ -123,7 +123,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         public async Task AsPaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnZeroExpected()
         {
             var people = await _usersDbContext.Users.AsPaginationAsync(1, 0);
-            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 0, ConverUserToUserViewModel);
+            var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 0, x => ConverUserToUserViewModel(x));
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
         }
