@@ -48,7 +48,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
             return new Pagination<TSource>(results, totalItems, page, limit);
         }
 
-        public static PaginationAuto<TSource, TDestination> AsPagination<TSource, TDestination>(this DbContext dbContext, int page, int limit, Func<TSource, TDestination> convertTSourceToTDestinationMethod, string sortColumn = "", bool orderByDescending = false) where TSource : class
+        public static Pagination<TDestination> AsPagination<TSource, TDestination>(this DbContext dbContext, int page, int limit, Func<TSource, TDestination> convertTSourceToTDestinationMethod, string sortColumn = "", bool orderByDescending = false) where TSource : class
         {
             PaginationExtensionsHelper.ValidateInputs(page, limit);
 
@@ -58,21 +58,21 @@ namespace Pagination.EntityFrameworkCore.Extensions
                 if (orderByDescending)
                 {
                     var resultsDesc = dbContext.Set<TSource>().OrderByDescending(p => EF.Property<object>(p, sortColumn)).Skip((page - 1) * limit).Take(limit);
-                    return new PaginationAuto<TSource, TDestination>(resultsDesc, totalItems, convertTSourceToTDestinationMethod, page, limit);
+                    return Pagination<TSource>.GetPagination<TSource, TDestination>(resultsDesc, totalItems, convertTSourceToTDestinationMethod, page, limit);
                 }
                 else
                 {
                     var resultsAsc = dbContext.Set<TSource>().OrderBy(p => EF.Property<object>(p, sortColumn)).Skip((page - 1) * limit).Take(limit);
-                    return new PaginationAuto<TSource, TDestination>(resultsAsc, totalItems, convertTSourceToTDestinationMethod, page, limit);
+                    return Pagination<TSource>.GetPagination<TSource, TDestination>(resultsAsc, totalItems, convertTSourceToTDestinationMethod, page, limit);
                 }
             }
 
             var results = dbContext.Set<TSource>().Skip((page - 1) * limit).Take(limit);
 
-            return new PaginationAuto<TSource, TDestination>(results, totalItems, convertTSourceToTDestinationMethod, page, limit);
+            return Pagination<TSource>.GetPagination<TSource, TDestination>(results, totalItems, convertTSourceToTDestinationMethod, page, limit);
         }
 
-        public static PaginationAuto<TSource, TDestination> AsPagination<TSource, TDestination>(this DbContext source, int page, int limit, Expression<Func<TSource, bool>> expression, Func<TSource, TDestination> convertTSourceToTDestinationMethod, string sortColumn = "", bool orderByDescending = false) where TSource : class
+        public static Pagination<TDestination> AsPagination<TSource, TDestination>(this DbContext source, int page, int limit, Expression<Func<TSource, bool>> expression, Func<TSource, TDestination> convertTSourceToTDestinationMethod, string sortColumn = "", bool orderByDescending = false) where TSource : class
         {
             PaginationExtensionsHelper.ValidateInputs(page, limit);
 
@@ -86,7 +86,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
             {
                 results = source.Set<TSource>().Where(expression).Skip((page - 1) * limit).Take(limit);
             }
-            return new PaginationAuto<TSource, TDestination>(results, totalItems, convertTSourceToTDestinationMethod, page, limit);
+            return Pagination<TSource>.GetPagination<TSource, TDestination>(results, totalItems, convertTSourceToTDestinationMethod, page, limit);
         }
     }
 }
