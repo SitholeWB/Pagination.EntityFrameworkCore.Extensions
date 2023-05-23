@@ -61,16 +61,16 @@ namespace Pagination.EntityFrameworkCore.Extensions
                 if (orderByDescending)
                 {
                     var resultsDesc = await dbContext.Set<TSource>().OrderByDescending(p => EF.Property<object>(p, sortColumn)).Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
-                    return new Pagination<TDestination>(resultsDesc?.Select(a => convertTSourceToTDestinationMethod(a)) ?? Enumerable.Empty<TDestination>(), totalItems, page, limit);
+                    return Pagination<TSource>.GetPagination(resultsDesc, totalItems, convertTSourceToTDestinationMethod, page, limit);
                 }
                 else
                 {
                     var resultsAsc = await dbContext.Set<TSource>().OrderBy(p => EF.Property<object>(p, sortColumn)).Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
-                    return new Pagination<TDestination>(resultsAsc?.Select(a => convertTSourceToTDestinationMethod(a)) ?? Enumerable.Empty<TDestination>(), totalItems, page, limit);
+                    return Pagination<TSource>.GetPagination<TSource, TDestination>(resultsAsc, totalItems, convertTSourceToTDestinationMethod, page, limit);
                 }
             }
             var results = await dbContext.Set<TSource>().Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
-            return new Pagination<TDestination>(results?.Select(a => convertTSourceToTDestinationMethod(a)) ?? Enumerable.Empty<TDestination>(), totalItems, page, limit);
+            return Pagination<TSource>.GetPagination(results, totalItems, convertTSourceToTDestinationMethod, page, limit);
         }
 
         public static async Task<Pagination<TDestination>> AsPaginationAsync<TSource, TDestination>(this DbContext dbContext, int page, int limit, Expression<Func<TSource, bool>> expression, Func<TSource, TDestination> convertTSourceToTDestinationMethod, string sortColumn = "", bool orderByDescending = false) where TSource : class
@@ -87,7 +87,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
             {
                 results = await dbContext.Set<TSource>().Where(expression).Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
             }
-            return new Pagination<TDestination>(results?.Select(a => convertTSourceToTDestinationMethod(a)) ?? Enumerable.Empty<TDestination>(), totalItems, page, limit);
+            return Pagination<TSource>.GetPagination(results, totalItems, convertTSourceToTDestinationMethod, page, limit);
         }
 
         // PaginationAuto Async Mapping
@@ -101,20 +101,17 @@ namespace Pagination.EntityFrameworkCore.Extensions
                 if (orderByDescending)
                 {
                     var resultsDesc = await dbContext.Set<TSource>().OrderByDescending(p => EF.Property<object>(p, sortColumn)).Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
-                    var destinationDesc = await resultsDesc.Select(async ev => await convertTSourceToTDestinationMethod(ev)).WhenAll().ConfigureAwait(false);
-                    return new Pagination<TDestination>(destinationDesc, totalItems, page, limit);
+                    return await Pagination<TSource>.GetPaginationAsync(resultsDesc, totalItems, convertTSourceToTDestinationMethod, page, limit);
                 }
                 else
                 {
                     var resultsAsc = await dbContext.Set<TSource>().OrderBy(p => EF.Property<object>(p, sortColumn)).Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
-                    var destinationAsc = await resultsAsc.Select(async ev => await convertTSourceToTDestinationMethod(ev)).WhenAll().ConfigureAwait(false);
-                    return new Pagination<TDestination>(destinationAsc, totalItems, page, limit);
+                    return await Pagination<TSource>.GetPaginationAsync(resultsAsc, totalItems, convertTSourceToTDestinationMethod, page, limit);
                 }
             }
             var results = await dbContext.Set<TSource>().Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
 
-            var destination = await results.Select(async ev => await convertTSourceToTDestinationMethod(ev)).WhenAll().ConfigureAwait(false);
-            return new Pagination<TDestination>(destination, totalItems, page, limit);
+            return await Pagination<TSource>.GetPaginationAsync(results, totalItems, convertTSourceToTDestinationMethod, page, limit);
         }
 
         public static async Task<Pagination<TDestination>> AsPaginationAsync<TSource, TDestination>(this DbContext dbContext, int page, int limit, Expression<Func<TSource, bool>> expression, Func<TSource, Task<TDestination>> convertTSourceToTDestinationMethod, string sortColumn = "", bool orderByDescending = false) where TSource : class
@@ -131,8 +128,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
             {
                 results = await dbContext.Set<TSource>().Where(expression).Skip((page - 1) * limit).Take(limit).ToListAsync().ConfigureAwait(false);
             }
-            var destination = await results.Select(async ev => await convertTSourceToTDestinationMethod(ev)).WhenAll().ConfigureAwait(false);
-            return new Pagination<TDestination>(destination, totalItems, page, limit);
+            return await Pagination<TSource>.GetPaginationAsync(results, totalItems, convertTSourceToTDestinationMethod, page, limit);
         }
     }
 }

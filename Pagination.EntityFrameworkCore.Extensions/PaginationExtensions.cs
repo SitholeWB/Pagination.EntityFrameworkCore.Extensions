@@ -51,7 +51,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
 
             var results = source.Skip((page - 1) * limit).Take(limit);
 
-            return new Pagination<TDestination>(results?.Select(a => convertTSourceToTDestinationMethod(a)) ?? Enumerable.Empty<TDestination>(), totalItems, page, limit);
+            return Pagination<TSource>.GetPagination(results, totalItems, convertTSourceToTDestinationMethod, page, limit);
         }
 
         public static Pagination<TDestination> AsPagination<TSource, TDestination>(this IQueryable<TSource> source, int page, int limit, Expression<Func<TSource, bool>> expression, Func<TSource, TDestination> convertTSourceToTDestinationMethod, string sortColumn = "", bool orderByDescending = false)
@@ -68,7 +68,7 @@ namespace Pagination.EntityFrameworkCore.Extensions
             {
                 results = source.Where(expression).Skip((page - 1) * limit).Take(limit);
             }
-            return new Pagination<TDestination>(results?.Select(a => convertTSourceToTDestinationMethod(a)) ?? Enumerable.Empty<TDestination>(), totalItems, page, limit);
+            return Pagination<TSource>.GetPagination(results, totalItems, convertTSourceToTDestinationMethod, page, limit);
         }
     }
 }
