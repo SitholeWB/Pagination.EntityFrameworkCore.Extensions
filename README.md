@@ -98,8 +98,8 @@ private CountryViewModel ConverCountryToCountryViewModel(Country country)
 {
 	return new CountryViewModel
 	{
-		name = user.Name,
-		Id = user.Id
+		name = country.Name,
+		Id = country.Id
 	};
 }
 
@@ -161,8 +161,8 @@ private async Task<CountryViewModel> ConverCountryToCountryViewModelAsync(Countr
 */
 	return new CountryViewModel
 	{
-		name = user.Name,
-		Id = user.Id
+		name = country.Name,
+		Id = country.Id
 	};
 }
 //Then auto map like this:
