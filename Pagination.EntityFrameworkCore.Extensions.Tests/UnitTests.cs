@@ -120,7 +120,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task AsPaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnZeroExpected()
+        public async Task AsPaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnZeroExpected()
         {
             var people = await _usersDbContext.Users.AsPaginationAsync(1, 0);
             var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 0, x => ConverUserToUserViewModel(x));
@@ -129,7 +129,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task AsPaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnExpected()
+        public async Task AsPaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnExpected()
         {
             var people = await _usersDbContext.Users.AsPaginationAsync(1, 2);
             var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, ConverUserToUserViewModel);
@@ -138,7 +138,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task AsPaginationAsync_Given_ConverUserToUserViewModelAsync_ShouldReturnExpected()
+        public async Task AsPaginationAsync_Given_ConvertUserToUserViewModelAsync_ShouldReturnExpected()
         {
             var people = await _usersDbContext.Users.AsPaginationAsync(1, 2);
             var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, ConverUserToUserViewModelAsync);
@@ -147,7 +147,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public void AsPagination_Given_ConverUserToUserViewModel_ShouldReturnExpected()
+        public void AsPagination_Given_ConvertUserToUserViewModel_ShouldReturnExpected()
         {
             var people = _usersDbContext.Users.AsPagination(1, 2);
             var peopleView = _usersDbContext.Users.AsPagination(1, 2, ConverUserToUserViewModel);
@@ -156,7 +156,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public void AsPagination_GivenSearchAndOrder_ConverUserToUserViewModel_ShouldReturnFilteredAndSorted()
+        public void AsPagination_GivenSearchAndOrder_ConvertUserToUserViewModel_ShouldReturnFilteredAndSorted()
         {
             var people = _usersDbContext.Users.AsQueryable().AsPagination<User>(1, 2, x => x.Firstname.Contains("Joe"));
             var peopleView = _usersDbContext.Users.AsPagination(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModel, nameof(User.Firstname), true);
@@ -166,7 +166,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task AsPaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnFilteredAndSorted()
+        public async Task AsPaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnFilteredAndSorted()
         {
             var people = await _usersDbContext.Users.AsPaginationAsync<User>(1, 2, x => x.Firstname.Contains("Joe"));
             var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModel);
@@ -176,7 +176,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task AsPaginationAsync_Given_ConverUserToUserViewModelAsync_ShouldReturnFilteredAndSorted()
+        public async Task AsPaginationAsync_Given_ConvertUserToUserViewModelAsync_ShouldReturnFilteredAndSorted()
         {
             var people = await _usersDbContext.Users.AsPaginationAsync<User>(1, 2, x => x.Firstname.Contains("Joe"));
             var peopleView = await _usersDbContext.Users.AsPaginationAsync(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModelAsync);
@@ -187,7 +187,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
 
         //DbContext
         [Test]
-        public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModel_ShouldReturnExpected()
+        public async Task AsPaginationAsync_DbContext_Given_ConvertUserToUserViewModel_ShouldReturnExpected()
         {
             var people = await _usersDbContext.AsPaginationAsync<User>(1, 2);
             var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, ConverUserToUserViewModel);
@@ -196,7 +196,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModelAsync_ShouldReturnExpected()
+        public async Task AsPaginationAsync_DbContext_Given_ConvertUserToUserViewModelAsync_ShouldReturnExpected()
         {
             var people = await _usersDbContext.AsPaginationAsync<User>(1, 2);
             var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, ConverUserToUserViewModelAsync);
@@ -205,7 +205,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModelAsync_ShouldReturnFiltered()
+        public async Task AsPaginationAsync_DbContext_Given_ConvertUserToUserViewModelAsync_ShouldReturnFiltered()
         {
             var peopleView = await _usersDbContext.AsPaginationAsync<User, AuthUserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), x => ConverUserToUserViewModelAsync(x, new AuthUser { Firstname = "Joe" }));
             Assert.AreEqual(1, peopleView.TotalItems);
@@ -213,7 +213,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public void AsPagination_DbContext_Given_ConverUserToUserViewModel_ShouldReturnExpected()
+        public void AsPagination_DbContext_Given_ConvertUserToUserViewModel_ShouldReturnExpected()
         {
             var people = _usersDbContext.AsPagination<User>(1, 2);
             var peopleView = _usersDbContext.AsPagination<User, UserViewModel>(1, 2, ConverUserToUserViewModel);
@@ -222,7 +222,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public void AsPagination_DbContext_GivenSearchAndOrder_ConverUserToUserViewModel_ShouldReturnFilteredAndSorted()
+        public void AsPagination_DbContext_GivenSearchAndOrder_ConvertUserToUserViewModel_ShouldReturnFilteredAndSorted()
         {
             var people = _usersDbContext.AsPagination<User>(1, 2, x => x.Firstname.Contains("Joe"));
             var peopleView = _usersDbContext.AsPagination<User, UserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModel, nameof(User.Firstname), true);
@@ -232,7 +232,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task AsPaginationAsync_DbContext_Given_ConverUserToUserViewModel_ShouldReturnFilteredAndSorted()
+        public async Task AsPaginationAsync_DbContext_Given_ConvertUserToUserViewModel_ShouldReturnFilteredAndSorted()
         {
             var people = await _usersDbContext.AsPaginationAsync<User>(1, 2, x => x.Firstname.Contains("Joe"));
             var peopleView = await _usersDbContext.AsPaginationAsync<User, UserViewModel>(1, 2, x => x.Firstname.Contains("Joe"), ConverUserToUserViewModel);
