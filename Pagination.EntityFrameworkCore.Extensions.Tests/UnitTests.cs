@@ -78,12 +78,12 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task PaginationAsync_Given_ConverUserToUserViewModel_ShouldReturnZeroExpected()
+        public void PaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnZeroExpected()
         {
-            var paginated = default(PaginationAuto<User, UserViewModel>);
+            var paginated = default(Pagination<UserViewModel>);
             Assert.DoesNotThrow(() =>
             {
-                paginated = new PaginationAuto<User, UserViewModel>(
+                paginated = Pagination<UserViewModel>.GetPagination(
                     new User[] {
                         new User {
                             Firstname = "Jobe",
