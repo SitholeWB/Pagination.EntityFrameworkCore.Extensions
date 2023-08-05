@@ -36,7 +36,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task PaginationAsync_Given_ShouldReturnZeroExpected()
+        public void PaginationAsync_Given_ShouldReturnZeroExpected()
         {
             var paginated = default(Pagination<string>);
             Assert.DoesNotThrow(() =>
@@ -50,7 +50,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public async Task PaginationAsync_Given10Limit_ShouldReturnTwoResultsAndZeroPages()
+        public void PaginationAsync_Given10Limit_ShouldReturnTwoResultsAndZeroPages()
         {
             var paginated = default(Pagination<string>);
             Assert.DoesNotThrow(() =>
@@ -78,7 +78,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public void PaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnZeroExpected()
+        public void GetPagination_Given_ConvertUserToUserViewModel_ShouldReturnZeroExpected()
         {
             var paginated = default(Pagination<UserViewModel>);
             Assert.DoesNotThrow(() =>
@@ -99,7 +99,7 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
         }
 
         [Test]
-        public void PaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnOneExpected()
+        public void GetPagination_Given_ConvertUserToUserViewModel_ShouldReturnOneExpected()
         {
             var paginated = default(Pagination<UserViewModel>);
             Assert.DoesNotThrow(() =>
@@ -117,6 +117,27 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
             Assert.AreEqual(1, paginated.TotalItems);
             Assert.AreEqual(1, paginated.TotalPages);
             Assert.AreEqual(1, paginated.Results.Count());
+        }
+
+        [Test]
+        public void GetPaginationAsync_Given_ConvertUserToUserViewModel_ShouldReturnZeroExpected()
+        {
+            var paginated = default(Pagination<UserViewModel>);
+            Assert.DoesNotThrowAsync(async () =>
+            {
+                paginated = await Pagination<UserViewModel>.GetPaginationAsync(
+                    new User[] {
+                        new User {
+                            Firstname = "Jobe",
+                            Lastname = "Sithole",
+                            Id= Guid.NewGuid(),
+                        }
+                    }, 0, ConverUserToUserViewModelAsync, 1, 0, true);
+            });
+
+            Assert.AreEqual(0, paginated.TotalItems);
+            Assert.AreEqual(0, paginated.TotalPages);
+            Assert.AreEqual(0, paginated.Results.Count());
         }
 
         [Test]
