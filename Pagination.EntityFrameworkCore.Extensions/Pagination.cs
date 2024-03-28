@@ -7,21 +7,17 @@ namespace Pagination.EntityFrameworkCore.Extensions
 {
     public class Pagination<T>
     {
-        public long TotalItems { get; private set; }
-        public int CurrentPage { get; private set; }
-        public int? NextPage { get; private set; }
-        public int? PreviousPage { get; private set; }
-        public int TotalPages { get; private set; }
-        public IEnumerable<T> Results { get; private set; }
+        public long TotalItems { get; set; }
+        public int CurrentPage { get; set; }
+        public int? NextPage { get; set; }
+        public int? PreviousPage { get; set; }
+        public int TotalPages { get; set; }
+        public IEnumerable<T> Results { get; set; }
 
         public Pagination()
         {
-            TotalItems = 0;
+            Results = new List<T>();
             CurrentPage = 1;
-            NextPage = null;
-            PreviousPage = null;
-            TotalPages = 1;
-            Results = Enumerable.Empty<T>();
         }
 
         public Pagination(Pagination<T> pagination)
