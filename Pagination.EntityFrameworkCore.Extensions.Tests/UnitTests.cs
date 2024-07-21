@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -281,6 +282,68 @@ namespace Pagination.EntityFrameworkCore.Extensions.Tests
             Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
             Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
             Assert.AreEqual(0, peopleView.Results.Count(x => !x.Firstname.Contains("Joe")));
+        }
+
+        [Test]
+        public void AsPagination_Given_ConvertUserToUserViewModel_ShouldConvertToJson()
+        {
+            var people = _usersDbContext.AsPagination<User>(1, 2);
+            var peopleView = _usersDbContext.AsPagination<User, UserViewModel>(1, 2, ConverUserToUserViewModel);
+            Assert.AreEqual(people.TotalItems, peopleView.TotalItems);
+            Assert.AreEqual(peopleView.Results.Count(x => x.Firstname.Contains("view")), peopleView.Results.Count());
+
+            var jsonPeople = JsonConvert.SerializeObject(people);
+            var jsonPeopleView = JsonConvert.SerializeObject(peopleView);
+
+            Assert.IsTrue(jsonPeople.Contains("TotalItems"));
+            Assert.IsTrue(jsonPeople.Contains("CurrentPage"));
+            Assert.IsTrue(jsonPeople.Contains("NextPage"));
+            Assert.IsTrue(jsonPeople.Contains("PreviousPage"));
+            Assert.IsTrue(jsonPeople.Contains("TotalPages"));
+            Assert.IsTrue(jsonPeople.Contains("Results"));
+            Assert.IsTrue(jsonPeople.Contains("Bob"));
+            Assert.IsTrue(jsonPeople.Contains("Smith"));
+            Assert.IsTrue(jsonPeople.Contains("Alice"));
+            Assert.IsTrue(jsonPeople.Contains("Cool"));
+
+            Assert.IsTrue(jsonPeopleView.Contains("TotalItems"));
+            Assert.IsTrue(jsonPeopleView.Contains("CurrentPage"));
+            Assert.IsTrue(jsonPeopleView.Contains("NextPage"));
+            Assert.IsTrue(jsonPeopleView.Contains("PreviousPage"));
+            Assert.IsTrue(jsonPeopleView.Contains("TotalPages"));
+            Assert.IsTrue(jsonPeopleView.Contains("Results"));
+            Assert.IsTrue(jsonPeopleView.Contains("Bob"));
+            Assert.IsTrue(jsonPeopleView.Contains("Smith"));
+            Assert.IsTrue(jsonPeopleView.Contains("Alice"));
+            Assert.IsTrue(jsonPeopleView.Contains("Cool"));
+            Assert.IsTrue(jsonPeopleView.Contains("---view"));
+
+            var peopleObj = JsonConvert.DeserializeObject<Pagination<User>>(jsonPeople);
+            var peopleViewObj = JsonConvert.DeserializeObject<Pagination<UserViewModel>>(jsonPeopleView);
+
+            Assert.AreEqual(people.TotalItems, peopleObj.TotalItems);
+            Assert.AreEqual(people.CurrentPage, peopleObj.CurrentPage);
+            Assert.AreEqual(people.NextPage, peopleObj.NextPage);
+            Assert.AreEqual(people.PreviousPage, peopleObj.PreviousPage);
+            Assert.AreEqual(people.TotalPages, peopleObj.TotalPages);
+            Assert.AreEqual(people.Results.Count(), peopleObj.Results.Count());
+            Assert.Greater(peopleObj.Results.Count(), 0);
+            Assert.IsTrue(peopleObj.Results.Any(x => x.Firstname.Contains("Bob") && x.Lastname.Contains("Smith")));
+            Assert.IsTrue(peopleObj.Results.Any(x => x.Firstname.Contains("Alice") && x.Lastname.Contains("Cool")));
+            Assert.IsFalse(peopleObj.Results.Any(x => x.Id.Equals(Guid.Empty)));
+
+            Assert.AreEqual(peopleView.TotalItems, peopleViewObj.TotalItems);
+            Assert.AreEqual(peopleView.CurrentPage, peopleViewObj.CurrentPage);
+            Assert.AreEqual(peopleView.NextPage, peopleViewObj.NextPage);
+            Assert.AreEqual(peopleView.PreviousPage, peopleViewObj.PreviousPage);
+            Assert.AreEqual(peopleView.TotalPages, peopleViewObj.TotalPages);
+            Assert.AreEqual(peopleView.Results.Count(), peopleViewObj.Results.Count());
+            Assert.Greater(peopleViewObj.Results.Count(), 0);
+            Assert.IsTrue(peopleViewObj.Results.Any(x => x.Firstname.Contains("Bob") && x.Lastname.Contains("Smith")));
+            Assert.IsTrue(peopleViewObj.Results.Any(x => x.Firstname.Contains("Alice") && x.Lastname.Contains("Cool")));
+            Assert.IsTrue(peopleViewObj.Results.Any(x => x.Firstname.Contains("---view")));
+            Assert.IsFalse(peopleViewObj.Results.Any(x => x.Id.Equals(Guid.Empty)));
+            Assert.IsFalse(peopleViewObj.Results.Any(x => x.Id.Equals(Guid.Empty)));
         }
 
         private UserViewModel ConverUserToUserViewModel(User user)

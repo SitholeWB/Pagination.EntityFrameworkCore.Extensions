@@ -14,8 +14,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
-    <PackageReference Include="Pagination.EntityFrameworkCore.Extensions" Version="2.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Pagination.EntityFrameworkCore.Extensions\Pagination.EntityFrameworkCore.Extensions.csproj" />
   </ItemGroup>
 
 </Project>
