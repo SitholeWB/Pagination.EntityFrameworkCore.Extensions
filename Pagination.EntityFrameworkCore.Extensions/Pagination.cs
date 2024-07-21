@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pagination.EntityFrameworkCore.Extensions
 {
-    public class Pagination<T>
+    public class Pagination<T> : IEnumerable<T>
     {
         public long TotalItems { get; set; }
         public int CurrentPage { get; set; }
@@ -28,6 +29,16 @@ namespace Pagination.EntityFrameworkCore.Extensions
             PreviousPage = pagination.PreviousPage;
             TotalPages = pagination.TotalPages;
             Results = pagination.Results;
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return Results.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Results.GetEnumerator();
         }
 
         public Pagination(IEnumerable<T> results, long totalItems, int page = 1, int limit = 10, bool applyPageAndLimitToResults = false)
